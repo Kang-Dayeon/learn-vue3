@@ -1,5 +1,10 @@
 <template>
-  <label>
+  <!-- 부모 컴포넌트의 class나 style은 병합된다 -->
+  <label         
+    class="child-class"
+    style="border: 1px solid black;"
+    id="child-id"
+  >
     {{ label }}
     <input 
       v-model="value"
