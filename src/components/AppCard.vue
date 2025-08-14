@@ -1,64 +1,29 @@
 <template>
-<div class="card">
-  <div class="card-body">
-    <!-- type : news , notice -->
-    <span class="badge text-bg-secondary">{{ typeName }}</span>
-    <h5 class="card-title mt-2">{{ title }}</h5>
-    <p class="card-text">{{ contents }}</p>
-    <a href="#" 
-    class="btn" 
-    :class="isLikeClass" 
-    @click="toggleLike"
-    >좋아요</a>
+  <div class="card">
+    <!-- haader슬롯이 있는 곳에만 사용할 수 있음 -->
+    <div v-if="$slots.header" class="card-header">
+      <slot name="header">#Header</slot>
+    </div>
+    <div v-if="$slots.default" class="card-body">
+      <!-- Scoped Slot으로 데이터 전송 -> props랑 비슷한 기능 -->
+      <slot :childMessage="childMessage">#Body</slot>
+    </div>
+    <div v-if="hasFooter" class="card-footer text-body-secondary">
+      <slot name="footer">#Footer</slot>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 export default {
-  props: {
-    type: {
-      type: String,
-      default: 'news',
-      validator: value => {
-        return ['news', 'notice'].includes(value);
-      }
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    contents: {
-      type: String,
-      // required: true,
-    },
-    isLike: {
-      type: Boolean,
-      default: false,
-    },
-    obj: {
-      type: Object,
-      default: () => ({})
-    }
-  },
-  emits:['toggleLike'],
-  setup (props, context) {
-    console.log('props.title: ', props.title)
-    const isLikeClass = computed(() => 
-      props.isLike? 'btn-danger' : 'btn-outline-danger'
-    );
-    const typeName = computed(() => 
-      props.type === 'news' ? '뉴스' : '공지사항'
-    );
-    const toggleLike = () => {
-      context.emit('toggleLike')
-    }; 
+  setup (props, { slots }) {
+    const childMessage = ref('자식 컴포넌트 메세지');
+    const hasFooter = computed(() => !!slots.footer);
     return {
-      isLikeClass,
-      typeName,
-      toggleLike,
+      childMessage,
+      hasFooter,
     }
   }
 }
