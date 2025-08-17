@@ -1,11 +1,16 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
-import { createApp } from 'vue'
-import App from './App.vue'
-// import AppCard from './components/AppCard.vue'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { createApp } from 'vue';
+import App from './App.vue';
+// import AppCard from './components/AppCard.vue';
 
-const app = createApp(App)
+const app = createApp(App);
 
 // app.component('AppCard', AppCard)
 
-app.mount('#app')
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'
+app.provide('app-message', 'app message 입니다.');
+
+//vue2에서의 방식
+app.config.globalProperties.msg = 'hello';
+app.mount('#app');
+
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
